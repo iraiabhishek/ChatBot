@@ -1,5 +1,23 @@
+// Global interval ID for the "Thinking..." bullet animation
+let thinkingIntervalId = null;
+
 document.addEventListener("DOMContentLoaded", function () {
+    // Load chat history from sessionStorage
     loadChatHistory();
+
+    // Load saved theme
+    let savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+        document.body.classList.add("light-mode");
+        document.getElementById("themeToggleBtn").textContent = "☀";
+    }
+
+    // Load saved style for header & footer
+    let savedStyle = localStorage.getItem("headerFooterStyle");
+    if (savedStyle) {
+        document.getElementById("styleSelect").value = savedStyle;
+        updateHeaderFooterStyle();
+    }
 });
 
 function sendMessage() {
@@ -13,11 +31,13 @@ function sendMessage() {
     // Append user message
     appendMessage("user", userInput);
 
-    // Disable input, send button and show "Thinking..." as placeholder
+    // Disable input & send button
     userInputField.value = "";
-    userInputField.placeholder = "Thinking...";
     userInputField.disabled = true;
     sendButton.disabled = true;
+
+    // Start the "Thinking..." bullet animation in the placeholder
+    startThinkingAnimation(userInputField);
 
     // Send AJAX request to the backend
     fetch("/chat", {
@@ -33,10 +53,10 @@ function sendMessage() {
         appendMessage("bot", "Error in response.");
     })
     .finally(() => {
-        // Re-enable input field and send button
+        // Re-enable input field & send button
         userInputField.disabled = false;
         sendButton.disabled = false;
-        userInputField.placeholder = "Type a message...";
+        stopThinkingAnimation(userInputField); // Stop bullet animation
         userInputField.focus();
     });
 }
@@ -63,16 +83,15 @@ function appendMessage(sender, message) {
     saveChatHistory();
 }
 
-
-// Save chat history to localStorage
+// Save chat history to sessionStorage (instead of localStorage)
 function saveChatHistory() {
-    localStorage.setItem("chatHistory", document.getElementById("chatbox").innerHTML);
+    sessionStorage.setItem("chatHistory", document.getElementById("chatbox").innerHTML);
 }
 
-// Load chat history from localStorage
+// Load chat history from sessionStorage
 function loadChatHistory() {
     let chatbox = document.getElementById("chatbox");
-    let storedChat = localStorage.getItem("chatHistory");
+    let storedChat = sessionStorage.getItem("chatHistory");
     if (storedChat) {
         chatbox.innerHTML = storedChat;
         chatbox.scrollTop = chatbox.scrollHeight;
@@ -81,8 +100,36 @@ function loadChatHistory() {
 
 // Clear chat history and start a new conversation
 function clearChat() {
-    localStorage.removeItem("chatHistory");
+    sessionStorage.removeItem("chatHistory");
     document.getElementById("chatbox").innerHTML = "";
+}
+
+// Animate the placeholder text to move "Thinking..." back and forth like a bullet
+function startThinkingAnimation(inputField) {
+    // Sequence of frames shifting spaces
+    const frames = [
+        "Thinking...",
+        " Thinking..",
+        "  Thinking.",
+        "   Thinking",
+        "  Thinking.",
+        " Thinking..",
+    ];
+    let index = 0;
+
+    thinkingIntervalId = setInterval(() => {
+        inputField.placeholder = frames[index];
+        index = (index + 1) % frames.length;
+    }, 150); // Animation speed in ms
+}
+
+// Stop the bullet animation and reset placeholder
+function stopThinkingAnimation(inputField) {
+    if (thinkingIntervalId) {
+        clearInterval(thinkingIntervalId);
+        thinkingIntervalId = null;
+    }
+    inputField.placeholder = "Type a message...";
 }
 
 // Send message on Enter key press
@@ -92,7 +139,6 @@ document.getElementById("userInput").addEventListener("keypress", function (even
     }
 });
 
-
 // Function to toggle between light and dark mode
 function toggleTheme() {
     let body = document.body;
@@ -101,19 +147,51 @@ function toggleTheme() {
     if (body.classList.contains("light-mode")) {
         body.classList.remove("light-mode");
         localStorage.setItem("theme", "dark"); // Save preference
-        themeToggleBtn.textContent = "🌙"; // Moon icon for dark mode
+        themeToggleBtn.textContent = "🌙"; // Moon icon
     } else {
         body.classList.add("light-mode");
         localStorage.setItem("theme", "light"); // Save preference
-        themeToggleBtn.textContent = "☀"; // Sun icon for light mode
+        themeToggleBtn.textContent = "☀"; // Sun icon
     }
 }
 
-// Load theme on page load
-document.addEventListener("DOMContentLoaded", function () {
-    let savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-        document.body.classList.add("light-mode");
-        document.getElementById("themeToggleBtn").textContent = "☀";
+// Function to update header & footer gradient style
+function updateHeaderFooterStyle() {
+    let style = document.getElementById("styleSelect").value;
+    let header = document.querySelector("header");
+    let footer = document.querySelector("footer");
+
+    // Clear existing shadows/borders
+    header.style.boxShadow = "none";
+    footer.style.boxShadow = "none";
+    header.style.borderBottom = "none";
+    footer.style.borderTop = "none";
+
+    if (style === "multiStop") {
+        // Dark multi-stop gradient
+        header.style.background = "linear-gradient(to right, #141e30, #243b55)";
+        footer.style.background = "linear-gradient(to right, #141e30, #243b55)";
+
+        header.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
+        header.style.borderBottom = "2px solid #444";
+        footer.style.boxShadow = "0 -4px 8px rgba(0, 0, 0, 0.3)";
+        footer.style.borderTop = "2px solid #444";
+
+    } else if (style === "vibrant") {
+        // Vibrant multi-stop gradient
+        header.style.background = "linear-gradient(90deg, #8A2387, #E94057, #F27121)";
+        footer.style.background = "linear-gradient(90deg, #8A2387, #E94057, #F27121)";
+
+        header.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
+        footer.style.boxShadow = "0 -4px 8px rgba(0, 0, 0, 0.3)";
+
+    } else if (style === "metallic") {
+        // Metallic look
+        header.style.background = "linear-gradient(135deg, #3f3f46, #505057 25%, #3f3f46 50%, #505057 75%, #3f3f46 100%)";
+        footer.style.background = "linear-gradient(135deg, #3f3f46, #505057 25%, #3f3f46 50%, #505057 75%, #3f3f46 100%)";
+
+        header.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.3)";
+        footer.style.boxShadow = "0 -4px 8px rgba(0, 0, 0, 0.3)";
     }
-});
+    localStorage.setItem("headerFooterStyle", style);
+}

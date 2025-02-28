@@ -9,15 +9,19 @@
 <body>
 
     <header>
-        <span>Chatbot</span>
-        <div class="header-buttons">
-            <button id="newChatBtn" onclick="clearChat()">New Chat</button>
-            <button id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
-        </div>
+      <span>Chatbot</span>
+      <div class="header-buttons">
+        <button id="newChatBtn" onclick="clearChat()">New Chat</button>
+        <button id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+
+        <!-- Dropdown to select gradient style -->
+        <select id="styleSelect" onchange="updateHeaderFooterStyle()">
+          <option value="multiStop">Dark Multi-Stop</option>
+          <option value="vibrant">Vibrant Gradient</option>
+          <option value="metallic">Metallic Look</option>
+        </select>
+      </div>
     </header>
-
-
-
 
     <div class="chat-container">
         <div class="chatbox" id="chatbox"></div>

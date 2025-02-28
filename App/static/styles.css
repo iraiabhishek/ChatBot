@@ -1,3 +1,4 @@
+/* ========== Base Styling ========== */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--bg-color);
@@ -9,36 +10,42 @@ body {
     height: 100vh;
 }
 
-/* Default (Dark Mode) */
+/* Default (Dark Mode) Variables */
 :root {
     --bg-color: #343541;
     --text-color: white;
-    --header-bg: #202123;
     --chat-bg: #40414F;
     --input-bg: #3B3C44;
     --button-bg: #0A84FF;
     --button-hover: #0066CC;
     --user-message-bg: #0A84FF;
     --bot-message-bg: #555;
+
+    /* New variable just for the input container */
+    --input-container-bg: #202123;
 }
 
-/* Light Mode */
+/* Light Mode Variables */
 body.light-mode {
     --bg-color: #F0F0F0;
     --text-color: black;
-    --header-bg: #D6D6D6;
     --chat-bg: white;
     --input-bg: #E0E0E0;
     --button-bg: #007BFF;
     --button-hover: #0056B3;
     --user-message-bg: #007BFF;
     --bot-message-bg: #E0E0E0;
+
+    /* Input container background in light mode */
+    --input-container-bg: #D6D6D6;
 }
 
-/* Header */
+/* ========== Header & Footer ========== */
+/* Default gradient (can be overridden by JS) */
 header {
-    background: var(--header-bg);
-    padding: 10px 15px;
+    background: linear-gradient(135deg, #202123, #2D2E36);
+    color: #fff; /* <-- Force text color to stay white */
+    padding: 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -46,16 +53,34 @@ header {
     font-weight: bold;
     width: 100%;
     box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #444;
+    backdrop-filter: blur(10px); /* Frosted glass look */
 }
 
-/* Buttons Container */
+footer {
+    background: linear-gradient(135deg, #202123, #2D2E36);
+    color: #fff; /* <-- Force text color to stay white */
+    padding: 12px 18px;
+    text-align: left;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    bottom: 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
+    border-top: 2px solid #444;
+    backdrop-filter: blur(10px); /* Frosted glass look */
+}
+
+/* ========== Buttons in Header ========== */
 .header-buttons {
     display: flex;
     gap: 10px;
 }
 
-/* New Chat Button */
-#newChatBtn, #themeToggleBtn {
+#newChatBtn,
+#themeToggleBtn {
     background: var(--button-bg);
     color: white;
     border: none;
@@ -66,11 +91,29 @@ header {
     transition: background 0.2s ease-in-out;
 }
 
-#newChatBtn:hover, #themeToggleBtn:hover {
+#newChatBtn:hover,
+#themeToggleBtn:hover {
     background: var(--button-hover);
 }
 
-/* Chat Container */
+/* ========== Dropdown for Gradient Selection ========== */
+#styleSelect {
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    outline: none;
+    transition: background 0.2s ease-in-out;
+}
+
+#styleSelect:hover {
+    background: var(--button-hover);
+}
+
+/* ========== Chat Container ========== */
 .chat-container {
     flex-grow: 1;
     display: flex;
@@ -95,7 +138,7 @@ header {
     margin-bottom: 15px;
 }
 
-/* Message Styling */
+/* ========== Message Styling ========== */
 .message {
     padding: 10px;
     border-radius: 12px;
@@ -118,11 +161,11 @@ header {
     text-align: left;
 }
 
-/* Input Container */
+/* ========== Input Container ========== */
 .input-container {
     display: flex;
     padding: 10px;
-    background: var(--header-bg);
+    background: var(--input-container-bg);
     border-top: 1px solid #555;
     width: 100%;
     box-sizing: border-box;
@@ -155,16 +198,4 @@ button {
 
 button:hover {
     background: var(--button-hover);
-}
-
-/* Footer */
-footer {
-    background: var(--header-bg);
-    padding: 10px 15px;
-    text-align: left;
-    font-size: 14px;
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    bottom: 0;
 }
