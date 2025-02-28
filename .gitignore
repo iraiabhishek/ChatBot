@@ -1,0 +1,7 @@
+#Directories
+__pycache__/
+.ipynb_checkpoints/
+
+#Files
+.env
+Gemini/configurations.py
