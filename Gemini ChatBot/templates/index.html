@@ -9,7 +9,7 @@
 <body>
 
     <header>
-      <span>Chatbot</span>
+      <span>Gemini Chatbot</span>
       <div class="header-buttons">
         <button id="newChatBtn" onclick="clearChat()">New Chat</button>
         <button id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
@@ -26,13 +26,14 @@
     <div class="chat-container">
         <div class="chatbox" id="chatbox"></div>
         <div class="input-container">
-            <input type="text" id="userInput" placeholder="Type your message..." autofocus>
+            <input type="text" id="userInput" placeholder="Ask anything" autofocus>
             <button id="sendButton" onclick="sendMessage()">Send</button>
         </div>
     </div>
 
     <footer>
         Design and developed by <b>Abhishek Rai</b>
+        <span id="footerClock"></span>
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}?v=1.4"></script>

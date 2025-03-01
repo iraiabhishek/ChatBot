@@ -71,7 +71,19 @@ footer {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.3);
     border-top: 2px solid #444;
     backdrop-filter: blur(10px); /* Frosted glass look */
+
+    display: flex;
+    justify-content: space-between; /* Space out elements */
+    align-items: center;
 }
+
+#footerClock {
+    margin-left: auto; /* Push it to the right */
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+}
+
 
 /* ========== Buttons in Header ========== */
 .header-buttons {

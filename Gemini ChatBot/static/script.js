@@ -66,7 +66,8 @@ function appendMessage(sender, message) {
     let messageDiv = document.createElement("div");
 
     messageDiv.classList.add("message", sender);
-    messageDiv.textContent = (sender === "user" ? "You: " : "Chatbot: ") + message;
+//    messageDiv.textContent = (sender === "user" ? "You: " : "Chatbot: ") + message;
+    messageDiv.textContent = (sender === "user" ? "" : "") + message;
 
     // Allow multi-line messages to be displayed properly
     messageDiv.style.whiteSpace = "pre-wrap";
@@ -129,7 +130,7 @@ function stopThinkingAnimation(inputField) {
         clearInterval(thinkingIntervalId);
         thinkingIntervalId = null;
     }
-    inputField.placeholder = "Type a message...";
+    inputField.placeholder = "Ask anything";
 }
 
 // Send message on Enter key press
@@ -195,3 +196,27 @@ function updateHeaderFooterStyle() {
     }
     localStorage.setItem("headerFooterStyle", style);
 }
+
+
+function updateClock() {
+    let now = new Date();
+
+    // Format date as DD-MM-YYYY
+    let dateString = now.toLocaleDateString("en-GB"); // "02-03-2025"
+
+    // Format time as HH:MM:SS AM/PM with uppercase AM/PM
+    let timeString = now.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).replace("am", "AM").replace("pm", "PM"); // Convert to uppercase AM/PM
+
+    // Set the formatted date and time in the footer
+    document.getElementById("footerClock").textContent = `${dateString} | ${timeString}`;
+}
+
+// Run the clock every second
+setInterval(updateClock, 1000);
+updateClock(); // Call once immediately
+
